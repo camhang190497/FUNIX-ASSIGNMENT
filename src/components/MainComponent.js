@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import { DEPARTMENTS, STAFFS } from '../shared/staffs';
 import StaffList from './StaffListComponent';
-import StaffDetail from './StaffdetailComponent';
+
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import Home from './HomeComponent';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 class Main extends Component {
     constructor(props) {
@@ -13,21 +15,27 @@ class Main extends Component {
     this.state = {
       staffs: STAFFS,
       departments: DEPARTMENTS,
-      selectedStaff: null
+      
     };
     }
 
-    onStaffSelect(staffId) {
-    this.setState({ selectedStaff: staffId })
-    }
+    
 
     render() {
+
+      const HomePage = () => {
+        return(
+          <Home />
+        )
+      }
     return (
       <div className="App">
         <Header />
-        <StaffList staffs={this.state.staffs}
-          onClick={(staffId) => this.onStaffSelect(staffId)}/>
-        <StaffDetail staff={this.state.staffs.filter((staff) => staff.id === this.state.selectedStaff)[0]}/>
+        <Switch>
+          <Route path="/trangchu" component={HomePage}/>
+          <Route exact path="/nhanvien" component={() => <StaffList staffs={this.state.staffs}/>} />
+          <Redirect to="/trangchu" />
+        </Switch>
         <Footer />
       </div>
     )
