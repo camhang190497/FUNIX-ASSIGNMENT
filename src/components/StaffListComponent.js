@@ -16,14 +16,15 @@ class StaffList extends Component {
     renderStaff(staff) {
         if (staff != null) {
             return(
-                <div>
-                    <Card>
-                        <CardTitle>Họ và tên: {staff.name}</CardTitle>
+                <div className="col-12 col-sm-6 col-md-4" 
+                style={{paddingTop:'10px', textIndent:'25px'}}>
+                    <Card key={staff.id}>
+                        <CardTitle style={{paddingTop:'15px'}}>Họ và tên: {staff.name}</CardTitle>
                         <CardText>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
                         <CardText>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</CardText>
                         <CardText>Phòng ban: {staff.department.name}</CardText>
                         <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
-                        <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
+                        <CardText style={{paddingBottom:'15px'}}>Số ngày đã làm thêm: {staff.overTime}</CardText>
                     </Card>
                 </div>
 
