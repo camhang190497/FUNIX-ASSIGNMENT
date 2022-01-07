@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
 import './App.css';
-import { STAFFS } from './shared/staffs';
+import { DEPARTMENTS, STAFFS } from './shared/staffs';
 import StaffList from './components/StaffListComponent';
 
 class App extends Component {
@@ -9,7 +9,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      staffs: STAFFS
+      staffs: STAFFS,
+      departments: DEPARTMENTS
     };
 
   }
