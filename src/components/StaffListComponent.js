@@ -39,12 +39,9 @@ class StaffList extends Component {
 
 
     render() {
-        const key = "name";
-        const arrayUniqueByKey = [...new Map(this.props.staffs.map((item) => 
-            [item[key], item])).values()];
-        console.log(arrayUniqueByKey);
+        
       
-        const stafflist =arrayUniqueByKey.map((staff) => {
+        const stafflist =this.props.staffs.map((staff) => {
         
             return (
                 <div className="col-12 col-sm-6 col-md-4" key={staff.id}>
