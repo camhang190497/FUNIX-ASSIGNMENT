@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
+
 import { DEPARTMENTS, STAFFS } from '../shared/staffs';
 import StaffList from './StaffListComponent';
 import StaffDetail from './StaffdetailComponent';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 
 class Main extends Component {
     constructor(props) {
@@ -22,16 +24,11 @@ class Main extends Component {
     render() {
     return (
       <div className="App">
-       <Navbar dark color="success">
-         <div className="container">
-           <NavbarBrand href="/"
-           >Ứng  dụng  quản  lí  nhân  sự  v1.0
-           </NavbarBrand>
-         </div>
-       </Navbar>
-       <StaffList staffs={this.state.staffs}
+        <Header />
+        <StaffList staffs={this.state.staffs}
           onClick={(staffId) => this.onStaffSelect(staffId)}/>
-       <StaffDetail staff={this.state.staffs.filter((staff) => staff.id === this.state.selectedStaff)[0]}/>
+        <StaffDetail staff={this.state.staffs.filter((staff) => staff.id === this.state.selectedStaff)[0]}/>
+        <Footer />
       </div>
     )
     }
