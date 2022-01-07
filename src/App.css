@@ -8,4 +8,11 @@
   border-bottom:1px ridge;
   min-height:400px;
 }
+body{
+  background-color: rgb(235, 231, 231);
+}
+li{
+  color:blue;
+  font-size: 20px;
+}
 
