@@ -108,12 +108,22 @@ import { Link } from 'react-router-dom';
             else if (this.state.touched.name && name.length > 30)
                 errors.name = 'Yêu cầu ít hơn 30 kí tự';
             
-            if (this.state.touched.doB)
+            if (this.state.touched.doB && doB.length < 2)
                 errors.doB = 'Yêu cầu nhập';
+
+            if (this.state.touched.startDate && startDate.length < 2)
+                errors.startDate = 'Yêu cầu nhập';
+            return errors;
         }
 
     
         render() {
+            
+            const errors = this.validate(
+                this.state.name,
+                this.state.doB, 
+                this.state.startDate
+            );
 
             const stafflist = this.props.staffs
             .filter((staff) => {
@@ -174,6 +184,7 @@ import { Link } from 'react-router-dom';
                                                 value={this.state.name}
                                                 onChange={this.handleInputChange}
                                                 />
+                                            <FormFeedback>{errors.name}</FormFeedback>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
@@ -184,6 +195,7 @@ import { Link } from 'react-router-dom';
                                                 value={this.state.doB}
                                                 onChange={this.handleInputChange}
                                                 />
+                                            <FormFeedback>{errors.doB}</FormFeedback>
                                         </Col>                        
                                     </FormGroup>
                                     <FormGroup row>
@@ -194,6 +206,7 @@ import { Link } from 'react-router-dom';
                                                 value={this.state.startDate}
                                                 onChange={this.handleInputChange}
                                                 />
+                                            <FormFeedback>{errors.startDate}</FormFeedback>
                                         </Col>                        
                                     </FormGroup>
                                     <FormGroup row>
