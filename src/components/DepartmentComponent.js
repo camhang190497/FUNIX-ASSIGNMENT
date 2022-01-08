@@ -1,4 +1,6 @@
 import React from 'react';
+import { Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function RenderDepartmentItem({department}) {
     return(
@@ -23,7 +25,14 @@ const DepartmentList = (props) => {
         <div>
             <div className="container">
                 <div className="row">
-
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/Trangchu'>Trang  chủ</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Phòng  ban</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Phòng  ban</h3>
+                        <hr/>
+                    </div>
                 </div>
                 <div className="row">
                      {departmentlist}

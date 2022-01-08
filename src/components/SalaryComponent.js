@@ -1,4 +1,6 @@
 import React from 'react';
+import { Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function RenderSalaryItem({staff}) {
     const basicSalary = 3000000;
@@ -30,7 +32,14 @@ const Salary = (props) => {
         <div>
             <div className="container">
                 <div className="row">
-
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/Trangchu'>Trang  chủ</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Bảng  Lương</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Bảng  lương</h3>
+                        <hr/>
+                    </div>
                 </div>
                 <div className="row">
                     {salary}
