@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardTitle, CardImg, Button, Form, FormGroup, Input, ModalHeader, ModalBody,Label, Modal, Col} from 'reactstrap';
+import { Card, CardTitle, CardImg, Button, Form, FormGroup, Input, ModalHeader, ModalBody,Label, Modal, Col, Row, FormFeedback} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
     function RenderStaffItem({staff, onClick}) {
@@ -25,14 +25,19 @@ import { Link } from 'react-router-dom';
                 id: 0,
                 name: '',
                 doB: '',
-                salaryScale: '',
+                salaryScale: 1,
                 startDate: '',
                 department: '',
-                annualLeave:'' ,
-                overTime: '',
+                annualLeave: 0 ,
+                overTime: 0,
                 image: '/assets/images/alberto.png',
                 isNavOpen: false,
                 isModalOpen: false,
+                touched: {
+                    name: false,
+                    doB: false,
+                    startDate: false,
+                }
 
             }
             this.toggleNav = this.toggleNav.bind(this);
@@ -86,6 +91,27 @@ import { Link } from 'react-router-dom';
             this.setState({ staffName: key})
             event.preventDefault();
         }
+
+        handleBlur = (field) => (evt) => {
+            this.setState({
+                touched: { ...this.state.touched, [field]: true }
+            });
+        }
+        validate(name, doB, startDate) {
+            const errors = {
+                name: '',
+                doB: '',
+                startDate: '',
+            };
+            if (this.state.touched.name && name.length < 2)
+                errors.name = 'Yêu cầu nhiều hơn 2 kí tự';
+            else if (this.state.touched.name && name.length > 30)
+                errors.name = 'Yêu cầu ít hơn 30 kí tự';
+            
+            if (this.state.touched.doB)
+                errors.doB = 'Yêu cầu nhập';
+        }
+
     
         render() {
 
@@ -200,7 +226,7 @@ import { Link } from 'react-router-dom';
                                         <Label htmlFor="annualLeave" md={4}>Số ngày nghỉ còn lại</Label>
                                         <Col md={8}>
                                             <Input type="text" id="annuaLeave" name="annualLeave"
-                                                placeholder="0"
+                                                
                                                 value={this.state.annualLeave}
                                                 onChange={this.handleInputChange}
                                                 />
@@ -210,7 +236,7 @@ import { Link } from 'react-router-dom';
                                         <Label htmlFor="overTime" md={4}>Số ngày đã làm thêm</Label>
                                         <Col md={8}>
                                             <Input type="text" id="overTime" name="overTime"
-                                                placeholder="0"
+                                               
                                                 value={this.state.overTime}
                                                 onChange={this.handleInputChange}
                                                 />
