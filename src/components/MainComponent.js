@@ -37,12 +37,22 @@ class Main extends Component {
           <StaffDetail staff={this.state.staffs.filter((staff) => staff.id === parseInt(match.params.staffId,10))[0] }/>
         )
       }
+
+      const addStaff = (staff) => {
+        const id = Math.floor(Math.random() * 100 +1);
+        const newStaff = {id, ...staff};
+        this.setState({
+          staffs:[...this.state.staffs, newStaff],
+        });
+        console.log(newStaff);
+      }
     return (
       <div className="App">
         <Header />
         <Switch>
           <Route path="/trangchu" component={HomePage}/>
-          <Route exact path="/nhanvien" component={() => <StaffList staffs={this.state.staffs}/>} />
+          <Route exact path="/nhanvien" component={() => <StaffList staffs={this.state.staffs}
+                postStaff={addStaff} />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
           <Route exact path="/phongban" component={() => <DepartmentList departments={this.state.departments}/>} />
           <Route exact path="/bangluong" component={() => <Salary staffs={this.state.staffs}/>} />

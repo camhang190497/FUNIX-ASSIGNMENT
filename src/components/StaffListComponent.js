@@ -37,6 +37,8 @@ import { Link } from 'react-router-dom';
             }
             this.toggleNav = this.toggleNav.bind(this);
             this.toggleModal = this.toggleModal.bind(this);
+            this.handleSubmit = this.handleSubmit.bind(this);
+            this.handleInputChange = this.handleInputChange.bind(this);
             this.handleSearch = this.handleSearch.bind(this);
         }
         toggleNav() {
@@ -48,7 +50,31 @@ import { Link } from 'react-router-dom';
             this.setState({
               isModalOpen: !this.state.isModalOpen
             });
-          }
+        }
+        handleInputChange(event) {
+            const target = event.target;
+            const value = target.type === 'checkbox' ? target.checked : target.value;
+            const name = target.name;
+        
+            this.setState({
+              [name]: value
+            });
+        }
+        handleSubmit = (event) => {
+            event.preventDefault();
+            const newStaff = {
+                name: this.state.name,
+                doB: this.state.doB,
+                salaryScale: this.state.salaryScale,
+                startDate: this.state.startDate,
+                department: this.state.department,
+                annualLeave: this.state.annualLeave,
+                overTime: this.state.overTime,
+                image: '/assets/images/alberto.png',
+            };
+            this.props.postStaff(newStaff);
+
+        }
 
     
 
@@ -113,13 +139,14 @@ import { Link } from 'react-router-dom';
                         <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
                         <ModalBody>
                             <div className="col-12 col-md-9">
-                                <Form>
+                                <Form onSubmit={this.handleSubmit}>
                                     <FormGroup row>
                                         <Label htmlFor="name" md={4}>Tên</Label>
                                         <Col md={8}>
                                             <Input type="text" id="name" name="name"
                                                 placeholder="Name"
                                                 value={this.state.name}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>
                                     </FormGroup>
@@ -129,6 +156,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="date" id="doB" name="doB"
                                                 placeholder="doB"
                                                 value={this.state.doB}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>                        
                                     </FormGroup>
@@ -138,6 +166,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="date" id="startDate" name="startDate"
                                                 placeholder="startDate"
                                                 value={this.state.startDate}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>                        
                                     </FormGroup>
@@ -147,6 +176,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="select" id="department" name="department"
                                                 placeholder="department"
                                                 value={this.state.department}
+                                                onChange={this.handleInputChange}
                                                 >
                                                     <option>Sale</option>
                                                     <option>HR</option>
@@ -162,6 +192,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="text" id="salaryScale" name="salaryScale"
                                                 placeholder="1.0 -> 3.0"
                                                 value={this.state.salaryScale}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>                        
                                     </FormGroup>
@@ -171,6 +202,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="text" id="annuaLeave" name="annualLeave"
                                                 placeholder="0"
                                                 value={this.state.annualLeave}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>                        
                                     </FormGroup>
@@ -180,6 +212,7 @@ import { Link } from 'react-router-dom';
                                             <Input type="text" id="overTime" name="overTime"
                                                 placeholder="0"
                                                 value={this.state.overTime}
+                                                onChange={this.handleInputChange}
                                                 />
                                         </Col>                        
                                     </FormGroup>
