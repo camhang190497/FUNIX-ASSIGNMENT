@@ -182,6 +182,8 @@ import { Link } from 'react-router-dom';
                                             <Input type="text" id="name" name="name"
                                                 placeholder="Name"
                                                 value={this.state.name}
+                                                valid={errors.name === ''}
+                                                invalid={errors.name !== ''}
                                                 onBlur={this.handleBlur('name')}
                                                 onChange={this.handleInputChange}
                                                 />
@@ -194,6 +196,8 @@ import { Link } from 'react-router-dom';
                                             <Input type="date" id="doB" name="doB"
                                                 placeholder="doB"
                                                 value={this.state.doB}
+                                                valid={errors.doB === ''}
+                                                invalid={errors.doB !== ''}
                                                 onBlur={this.handleBlur('doB')}
                                                 onChange={this.handleInputChange}
                                                 />
@@ -206,6 +210,8 @@ import { Link } from 'react-router-dom';
                                             <Input type="date" id="startDate" name="startDate"
                                                 placeholder="startDate"
                                                 value={this.state.startDate}
+                                                valid={errors.startDate === ''}
+                                                invalid={errors.startDate !== ''}
                                                 onBlur={this.handleBlur('startDate')}
                                                 onChange={this.handleInputChange}
                                                 />
