@@ -12,7 +12,7 @@ function RenderSalaryItem({staff}) {
             <li className="list-group-item">
                 <h4>{staff.name}</h4>
                 <p>Mã nhân viên: {staff.id}</p>
-                <p>Hệ số lương: {staff.salaryScale}</p>
+                <p>Hệ số lương: {parseInt((staff.salaryScale),10)}</p>
                 <p>Số giờ làm thêm: {staff.overTime}</p>
                 <p><span>Lương: {totalsalary}</span></p>
             </li>

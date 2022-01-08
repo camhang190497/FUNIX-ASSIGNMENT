@@ -36,9 +36,10 @@ import { Link } from 'react-router-dom';
                         <h3>{props.staff.name}</h3>
                         <hr/>
                     </div>
-                </div>
-                <div className="row">
-                    <RenderStaff staff={props.staff} />
+                
+                    <div className="col-12">
+                        <RenderStaff staff={props.staff} />
+                    </div>
                 </div>
             </div>
         );
