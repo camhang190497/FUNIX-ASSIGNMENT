@@ -79,6 +79,7 @@ import { Link } from 'react-router-dom';
             };
             this.props.postStaff(newStaff);
 
+            
         }
 
     
