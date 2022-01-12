@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { Card, CardTitle, CardImg, Button, Form, FormGroup, Input, ModalHeader, ModalBody,Label, Modal, Col, Row, FormFeedback} from 'reactstrap';
+import { Card, CardTitle, CardImg, Button, Form,  Input, ModalHeader, ModalBody,Label, Modal, Col, Row, FormFeedback} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control, LocalForm, Errors } from 'react-redux-form';
 
-    function RenderStaffItem({staff, onClick}) {
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+
+    function RenderStaffItem({staff}) {
         return(
             <div style={{paddingBottom: '10px'}}>
             <Card>
@@ -21,11 +27,8 @@ import { Link } from 'react-router-dom';
 
             this.state= {
                 staffName: '',
-                id: '',
-                id: 0,
-                name: '',
                 doB: '',
-                salaryScale: 1,
+               
                 startDate: '',
                 department: '',
                 annualLeave: 0 ,
@@ -34,7 +37,7 @@ import { Link } from 'react-router-dom';
                 isNavOpen: false,
                 isModalOpen: false,
                 touched: {
-                    name: false,
+                    
                     doB: false,
                     startDate: false,
                 }
@@ -44,6 +47,7 @@ import { Link } from 'react-router-dom';
             this.toggleModal = this.toggleModal.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
             this.handleInputChange = this.handleInputChange.bind(this);
+            this.handleBlur = this.handleBlur.bind(this);
             this.handleSearch = this.handleSearch.bind(this);
         }
         toggleNav() {
@@ -65,19 +69,27 @@ import { Link } from 'react-router-dom';
               [name]: value
             });
         }
-        handleSubmit = (event) => {
-            event.preventDefault();
+        handleSubmit = (value) => {
+            //event.preventDefault();
             const newStaff = {
-                name: this.state.name,
+                name: value.name,
                 doB: this.state.doB,
-                salaryScale: this.state.salaryScale,
+                salaryScale: value.salaryScale,
                 startDate: this.state.startDate,
-                department: this.state.department,
-                annualLeave: this.state.annualLeave,
-                overTime: this.state.overTime,
+                department: value.department,
+                annualLeave: value.annualLeave,
+                overTime: value.overTime,
                 image: '/assets/images/alberto.png',
             };
-            this.props.postStaff(newStaff);
+            if (  !this.state.doB || !this.state.startDate) 
+                this.setState({
+                    touched: {
+                            doB:true,
+                            startDate:true
+                    }
+            })
+            else
+                this.props.postStaff(newStaff);
 
             
         }
@@ -98,16 +110,13 @@ import { Link } from 'react-router-dom';
                 touched: { ...this.state.touched, [field]: true }
             });
         }
-        validate(name, doB, startDate) {
+        validate( doB, startDate) {
             const errors = {
-                name: '',
+                
                 doB: '',
                 startDate: '',
             };
-            if (this.state.touched.name && name.length < 2)
-                errors.name = 'Yêu cầu nhiều hơn 2 kí tự';
-            else if (this.state.touched.name && name.length > 30)
-                errors.name = 'Yêu cầu ít hơn 30 kí tự';
+           
             
             if (this.state.touched.doB && doB.length < 2)
                 errors.doB = 'Yêu cầu nhập';
@@ -121,7 +130,7 @@ import { Link } from 'react-router-dom';
         render() {
             
             const errors = this.validate(
-                this.state.name,
+                
                 this.state.doB, 
                 this.state.startDate
             );
@@ -141,11 +150,11 @@ import { Link } from 'react-router-dom';
             });
 
             return(
-                <div className="container">
+            <div className="container">
                 <div className="row">
                     <div className="col-12">
                         <nav className="navbar navbar-light bg-light justify-content-between">
-                            <a className="navbar-brand">Nhân Viên</a>
+                            <p className="navbar-brand" >Nhân Viên</p>
                             <Button outline onClick={this.toggleModal}>
                                 <i className="fa fa-plus fa-lg"></i>
                             </Button>
@@ -176,22 +185,30 @@ import { Link } from 'react-router-dom';
                         <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
                         <ModalBody>
                             <div className="col-12 col-md-9">
-                                <Form onSubmit={this.handleSubmit}>
-                                    <FormGroup row>
+                                <LocalForm onSubmit={this.handleSubmit}>
+                                    <Row className="form-group">
                                         <Label htmlFor="name" md={4}>Tên</Label>
                                         <Col md={8}>
-                                            <Input type="text" id="name" name="name"
+                                            <Control.text model=".name" id="name" name="name"
                                                 placeholder="Name"
-                                                value={this.state.name}
-                                                valid={errors.name === ''}
-                                                invalid={errors.name !== ''}
-                                                onBlur={this.handleBlur('name')}
-                                                onChange={this.handleInputChange}
+                                                className="form-control"
+                                                validators={{
+                                                    required, minLength: minLength(2), maxLength: maxLength(15)
+                                                }}
                                                 />
-                                            <FormFeedback>{errors.name}</FormFeedback>
+                                            <Errors
+                                                className="text-danger"
+                                                model=".name"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Yêu  cầu  nhập',
+                                                    minLength: 'Phải  nhiều  hơn  2 kí  tự',
+                                                    maxLength: 'Phải  ít  hơn  15 kí  tự'
+                                                }}
+                                            />
                                         </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="doB" md={4}>Ngày sinh</Label>
                                         <Col md={8}>
                                             <Input type="date" id="doB" name="doB"
@@ -204,8 +221,8 @@ import { Link } from 'react-router-dom';
                                                 />
                                             <FormFeedback>{errors.doB}</FormFeedback>
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="startDate" md={4}>Ngày vào công ty</Label>
                                         <Col md={8}>
                                             <Input type="date" id="startDate" name="startDate"
@@ -218,61 +235,94 @@ import { Link } from 'react-router-dom';
                                                 />
                                             <FormFeedback>{errors.startDate}</FormFeedback>
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="department" md={4}>Phòng ban</Label>
                                         <Col md={8}>
-                                            <Input type="select" id="department" name="department"
+                                            <Control.select model=".department" id="department" name="department"
                                                 placeholder="department"
-                                                value={this.state.department}
-                                                onChange={this.handleInputChange}
+                                                className="form-control"
                                                 >
                                                     <option>Sale</option>
                                                     <option>HR</option>
                                                     <option>Marketing</option>
                                                     <option>IT</option>
                                                     <option>Finance</option>
-                                            </Input>
+                                            </Control.select>
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="salaryScale" md={4}>Hệ số lương</Label>
                                         <Col md={8}>
-                                            <Input type="text" id="salaryScale" name="salaryScale"
+                                            <Control.text model=".salaryScale" id="salaryScale" name="salaryScale"
                                                 placeholder="1.0 -> 3.0"
-                                                value={this.state.salaryScale}
-                                                onChange={this.handleInputChange}
+                                                defaultValue="1"
+                                                className="form-control"
+                                                validators={{
+                                                    required,  isNumber
+                                                }}
                                                 />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".salaryScale"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Yêu  cầu  nhập',
+                                                    isNumber: 'Phải  là  một  số'
+                                                }}
+                                            />
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="annualLeave" md={4}>Số ngày nghỉ còn lại</Label>
                                         <Col md={8}>
-                                            <Input type="text" id="annuaLeave" name="annualLeave"
-                                                
-                                                value={this.state.annualLeave}
-                                                onChange={this.handleInputChange}
+                                            <Control.text model=".annuaLeave" id="annuaLeave" name="annualLeave"
+                                                //defaultValue="0"
+                                                className="form-control"
+                                                validators={{
+                                                    required,  isNumber
+                                                }}
                                                 />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".annuaLeave"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Yêu  cầu  nhập',
+                                                    isNumber: 'Phải  là  một  số'
+                                                }}
+                                            />
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Label htmlFor="overTime" md={4}>Số ngày đã làm thêm</Label>
                                         <Col md={8}>
-                                            <Input type="text" id="overTime" name="overTime"
-                                               
-                                                value={this.state.overTime}
-                                                onChange={this.handleInputChange}
+                                            <Control.text model=".overTime" id="overTime" name="overTime"
+                                                //defaultValue="0"
+                                                className="form-control"
+                                                validators={{
+                                                    required,  isNumber
+                                                }}
                                                 />
+                                            <Errors
+                                                className="text-danger"
+                                                model=".overTime"
+                                                show="touched"
+                                                messages={{
+                                                    required: 'Yêu  cầu  nhập',
+                                                    isNumber: 'Phải  là  một  số'
+                                                }}
+                                            />
                                         </Col>                        
-                                    </FormGroup>
-                                    <FormGroup row>
+                                    </Row>
+                                    <Row className="form-group">
                                         <Col md={{size: 10, offset: 2}}>
                                             <Button type="submit" color="primary">
                                                 Thêm
                                             </Button>
                                         </Col>
-                                    </FormGroup>
-                                </Form>
+                                    </Row>
+                                </LocalForm>
                             </div>
                         </ModalBody>
 
