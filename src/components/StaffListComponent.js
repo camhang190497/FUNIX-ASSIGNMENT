@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
             this.state= {
                 staffName: '',
                 id: '',
-                id: 0,
+                
                 name: '',
                 doB: '',
                 salaryScale: 1,
@@ -77,8 +77,18 @@ import { Link } from 'react-router-dom';
                 overTime: this.state.overTime,
                 image: '/assets/images/alberto.png',
             };
+            if (!this.state.name || !this.state.doB || !this.state.startDate)
+            this.setState({
+                touched: {
+                    name: true,
+                    doB: true,
+                    startDate:true
+                }
+            })
+            else
             this.props.postStaff(newStaff);
 
+            
         }
 
     
@@ -140,7 +150,7 @@ import { Link } from 'react-router-dom';
             });
 
             return(
-                <div className="container">
+            <div className="container">
                 <div className="row">
                     <div className="col-12">
                         <nav className="navbar navbar-light bg-light justify-content-between">

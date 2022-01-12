@@ -46,6 +46,7 @@ class Main extends Component {
         });
         console.log(newStaff);
       }
+
     return (
       <div className="App">
         <Header />
