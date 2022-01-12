@@ -243,11 +243,11 @@ const isNumber = (val) => !isNaN(Number(val));
                                                 placeholder="department"
                                                 className="form-control"
                                                 >
-                                                    <option>Sale</option>
-                                                    <option>HR</option>
-                                                    <option>Marketing</option>
-                                                    <option>IT</option>
-                                                    <option>Finance</option>
+                                                    <option value="Sale" >Sale</option>
+                                                    <option value="HR" >HR</option>
+                                                    <option value="Marketing" >Marketing</option>
+                                                    <option value="IT" >IT</option>
+                                                    <option value="Finance" >Finance</option>
                                             </Control.select>
                                         </Col>                        
                                     </Row>
@@ -277,8 +277,9 @@ const isNumber = (val) => !isNaN(Number(val));
                                         <Label htmlFor="annualLeave" md={4}>Số ngày nghỉ còn lại</Label>
                                         <Col md={8}>
                                             <Control.text model=".annuaLeave" id="annuaLeave" name="annualLeave"
-                                                //defaultValue="0"
+                                                
                                                 className="form-control"
+                                                defaultValue="0"
                                                 validators={{
                                                     required,  isNumber
                                                 }}
@@ -298,7 +299,7 @@ const isNumber = (val) => !isNaN(Number(val));
                                         <Label htmlFor="overTime" md={4}>Số ngày đã làm thêm</Label>
                                         <Col md={8}>
                                             <Control.text model=".overTime" id="overTime" name="overTime"
-                                                //defaultValue="0"
+                                                defaultValue="0"
                                                 className="form-control"
                                                 validators={{
                                                     required,  isNumber
