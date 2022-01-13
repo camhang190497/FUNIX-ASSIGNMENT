@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardTitle, CardImg, Button, Form,  Input, ModalHeader, ModalBody,Label, Modal, Col, Row, FormFeedback} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { addStaff } from '../redux/ActionCreators';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -17,6 +18,7 @@ const isNumber = (val) => !isNaN(Number(val));
                     <CardTitle style={{textAlign:'center'}}>{staff.name}</CardTitle>
                 </Link>
             </Card>
+            
             </div>
         );
     }  
@@ -43,59 +45,10 @@ const isNumber = (val) => !isNaN(Number(val));
                 }
 
             }
-            this.toggleNav = this.toggleNav.bind(this);
-            this.toggleModal = this.toggleModal.bind(this);
-            this.handleSubmit = this.handleSubmit.bind(this);
-            this.handleInputChange = this.handleInputChange.bind(this);
-            this.handleBlur = this.handleBlur.bind(this);
+            
             this.handleSearch = this.handleSearch.bind(this);
         }
-        toggleNav() {
-            this.setState({
-                isNavOpen: !this.state.isNavOpen
-            });
-        }
-        toggleModal() {
-            this.setState({
-              isModalOpen: !this.state.isModalOpen
-            });
-        }
-        handleInputChange(event) {
-            const target = event.target;
-            const value = target.type === 'checkbox' ? target.checked : target.value;
-            const name = target.name;
         
-            this.setState({
-              [name]: value
-            });
-        }
-        handleSubmit = (value) => {
-            //event.preventDefault();
-            const newStaff = {
-                name: value.name,
-                doB: this.state.doB,
-                salaryScale: value.salaryScale,
-                startDate: this.state.startDate,
-                department: value.department,
-                annualLeave: value.annualLeave,
-                overTime: value.overTime,
-                image: '/assets/images/alberto.png',
-            };
-            if (  !this.state.doB || !this.state.startDate) 
-                this.setState({
-                    touched: {
-                            doB:true,
-                            startDate:true
-                    }
-            })
-            else
-                this.props.postStaff(newStaff);
-
-            
-        }
-
-    
-
         handleSearch(event) {
             const key = event.target.key.value;
            //alert(this.input.value)
@@ -105,35 +58,9 @@ const isNumber = (val) => !isNaN(Number(val));
             event.preventDefault();
         }
 
-        handleBlur = (field) => (evt) => {
-            this.setState({
-                touched: { ...this.state.touched, [field]: true }
-            });
-        }
-        validate( doB, startDate) {
-            const errors = {
-                
-                doB: '',
-                startDate: '',
-            };
-           
-            
-            if (this.state.touched.doB && doB.length < 2)
-                errors.doB = 'Yêu cầu nhập';
-
-            if (this.state.touched.startDate && startDate.length < 2)
-                errors.startDate = 'Yêu cầu nhập';
-            return errors;
-        }
-
-    
         render() {
             
-            const errors = this.validate(
-                
-                this.state.doB, 
-                this.state.startDate
-            );
+           
 
             const stafflist = this.props.staffs
             .filter((staff) => {
@@ -144,7 +71,7 @@ const isNumber = (val) => !isNaN(Number(val));
             .map((staff) => {
                 return(
                     <div key={staff.id} className="col-6 col-sm-4 col-md-2">
-                        <RenderStaffItem staff={staff} />
+                        <RenderStaffItem staff={staff} addStaff={this.props.addStaff}/>
                     </div>
                 )
             });
@@ -155,9 +82,7 @@ const isNumber = (val) => !isNaN(Number(val));
                     <div className="col-12">
                         <nav className="navbar navbar-light bg-light justify-content-between">
                             <p className="navbar-brand" >Nhân Viên</p>
-                            <Button outline onClick={this.toggleModal}>
-                                <i className="fa fa-plus fa-lg"></i>
-                            </Button>
+                            <StaffForm addStaff={this.props.addStaff}/>
                             <Form className="form-inline"
                                 onSubmit={this.handleSearch}
                             > 
@@ -180,7 +105,128 @@ const isNumber = (val) => !isNaN(Number(val));
                     {stafflist}
                 </div>
 
-                <div className="row row-content">
+                
+            </div>
+            );
+        }
+    }
+class StaffForm extends Component {
+    constructor(props){
+        super(props);
+        
+        this.state= {
+            staffName: '',
+            doB: '',
+           
+            startDate: '',
+            department: '',
+            annualLeave: 0 ,
+            overTime: 0,
+            image: '/assets/images/alberto.png',
+            isNavOpen: false,
+            isModalOpen: false,
+            touched: {
+                
+                doB: false,
+                startDate: false,
+            }
+
+        }
+        this.toggleNav = this.toggleNav.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+
+        
+    }
+    toggleNav() {
+        this.setState({
+            isNavOpen: !this.state.isNavOpen
+        });
+    }
+    toggleModal() {
+        this.setState({
+          isModalOpen: !this.state.isModalOpen
+        });
+    }
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+    
+        this.setState({
+          [name]: value
+        });
+    }
+    handleSubmit = (value) => {
+        //event.preventDefault();
+        const newStaff = {
+            name: value.name,
+            doB: this.state.doB,
+            startDate: this.state.startDate,
+            salaryScale: value.salaryScale,
+            department: value.department,
+            annualLeave: value.annualLeave,
+            overTime: value.overTime,
+            image: '/assets/images/alberto.png',
+        };
+        if (  !this.state.doB || !this.state.startDate) 
+            this.setState({
+                touched: {
+                        doB:true,
+                        startDate:true
+                }
+        })
+        else
+            this.props.addStaff(
+                this.props.staffId, 
+                value.name, 
+                value.doB, 
+                value.startDate,
+                value.department, 
+                value.salaryScale, 
+                value.annualLeave, 
+                value.overTime, 
+                value.image);
+
+        
+    }
+    handleBlur = (field) => (evt) => {
+        this.setState({
+            touched: { ...this.state.touched, [field]: true }
+        });
+    }
+    validate( doB, startDate) {
+        const errors = {
+            
+            doB: '',
+            startDate: '',
+        };
+       
+        
+        if (this.state.touched.doB && doB.length < 2)
+            errors.doB = 'Yêu cầu nhập';
+
+        if (this.state.touched.startDate && startDate.length < 2)
+            errors.startDate = 'Yêu cầu nhập';
+        return errors;
+    }
+
+    render(){
+        const errors = this.validate(
+                
+            this.state.doB, 
+            this.state.startDate
+        );
+        return(
+            <React.Fragment>
+                <div className="col-2 col-auto">
+                    <Button outline onClick={this.toggleModal}>
+                        <i className="fa fa-plus fa-lg"></i>
+                    </Button>
+                </div>
+                <div >
                     <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                         <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
                         <ModalBody>
@@ -331,9 +377,10 @@ const isNumber = (val) => !isNaN(Number(val));
 
                 </div>
                 
-            </div>
-            );
-        }
-    }
+            </React.Fragment>
+            
 
+        )
+    }
+}
 export default StaffList;
