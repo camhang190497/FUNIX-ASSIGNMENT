@@ -10,8 +10,8 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addStaff,fetchStaffs } from '../redux/ActionCreators';
-
+import { addStaff,fetchStaffs, fetchDepartments } from '../redux/ActionCreators';
+import DepartmentDetail from './DepartmentdetailComponent';
 const mapStateToProps = state => {
   return {
     staffs: state.staffs,
@@ -22,7 +22,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   
   addStaff: (staffId, name, doB, startDate, department, salaryScale, annualLeave, overTime) => dispatch(addStaff(staffId, name, doB, startDate, department,salaryScale, annualLeave, overTime)),
-  fetchStaffs: () => { dispatch(fetchStaffs())}
+  fetchStaffs: () => { dispatch(fetchStaffs())},
+  fetchDepartments: () => { dispatch(fetchDepartments())}
 });
 
 class Main extends Component {
@@ -33,6 +34,7 @@ class Main extends Component {
     }
     componentDidMount() {
       this.props.fetchStaffs();
+      this.props.fetchDepartments();
     }
 
     
@@ -42,7 +44,7 @@ class Main extends Component {
       const HomePage = () => {
         return(
           <Home staff={this.props.staffs.staffs.filter((staff) => staff.id)[0]}
-          department={this.props.departments.filter((department) => department.id)[0]}/>
+          department={this.props.departments.departments.filter((department) => department.id)[0]}/>
         )
       }
 
@@ -53,7 +55,13 @@ class Main extends Component {
           errMess={this.props.staffs.errMess}/>
         )
       }
-
+      const StaffWithDept =({match}) => {
+        return(
+          <DepartmentDetail 
+          dept={this.props.departments.departments.filter((dept) => dept.id === match.params.deptId)[0]}
+          staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === parseInt(match.params.deptId,10))[0] }/>
+        )
+      }
     
     return (
       <div className="App">
@@ -61,9 +69,11 @@ class Main extends Component {
         <Switch>
           <Route path="/trangchu" component={HomePage}/>
           <Route exact path="/nhanvien" component={() => <StaffList staffs={this.props.staffs.staffs} 
-          addStaff={this.props.addStaff} />} />
+                addStaff={this.props.addStaff} />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
-          <Route exact path="/phongban" component={() => <DepartmentList departments={this.props.departments}/>} />
+          <Route exact path="/phongban" component={() => <DepartmentList departments={this.props.departments.departments} 
+                staffs={this.props.staffs.staffs} />} />
+          <Route path='/phongban/:deptId' component={StaffWithDept} />
           <Route exact path="/bangluong" component={() => <Salary staffs={this.props.staffs}/>} />
           <Redirect to="/trangchu" />
         </Switch>
