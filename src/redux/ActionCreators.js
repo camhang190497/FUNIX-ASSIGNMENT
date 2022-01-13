@@ -62,3 +62,26 @@ export const addDepartments = (departments) => ({
     type: ActionTypes.ADD_DEPARTMENTS,
     payload: departments
 });
+
+//fetch staff salary
+export const fetchStaffsSalary = () => (dispatch) => {
+
+    dispatch(staffsSalaryLoading(true));
+
+    return fetch(baseUrl + 'staffsSalary')
+    .then(response => response.json())
+    .then(staffsSalary => dispatch(addStaffsSalary(staffsSalary)));
+}
+export const staffsSalaryLoading = () => ({
+    type: ActionTypes.STAFFSSALARY_LOADING
+});
+
+export const staffsSalaryFailed = (errmess) => ({
+    type: ActionTypes.STAFFSSALARY_FAILED,
+    payload: errmess
+});
+
+export const addStaffsSalary = (staffsSalary) => ({
+    type: ActionTypes.ADD_STAFFSSALARY,
+    payload: staffsSalary
+});

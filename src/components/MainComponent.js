@@ -10,20 +10,21 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addStaff,fetchStaffs, fetchDepartments } from '../redux/ActionCreators';
+import { addStaff,fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
 import DepartmentDetail from './DepartmentdetailComponent';
 const mapStateToProps = state => {
   return {
     staffs: state.staffs,
     departments: state.departments,
-    
+    staffsSalary: state.staffsSalary
   }
 }
 const mapDispatchToProps = dispatch => ({
   
   addStaff: (staffId, name, doB, startDate, department, salaryScale, annualLeave, overTime) => dispatch(addStaff(staffId, name, doB, startDate, department,salaryScale, annualLeave, overTime)),
   fetchStaffs: () => { dispatch(fetchStaffs())},
-  fetchDepartments: () => { dispatch(fetchDepartments())}
+  fetchDepartments: () => { dispatch(fetchDepartments())},
+  fetchStaffsSalary: () => { dispatch(fetchStaffsSalary())}
 });
 
 class Main extends Component {
@@ -35,6 +36,7 @@ class Main extends Component {
     componentDidMount() {
       this.props.fetchStaffs();
       this.props.fetchDepartments();
+      this.props.fetchStaffsSalary();
     }
 
     
@@ -52,7 +54,8 @@ class Main extends Component {
         return(
           <StaffDetail staff={this.props.staffs.staffs.filter((staff) => staff.id === parseInt(match.params.staffId,10))[0] }
           isLoading={this.props.staffs.isLoading}
-          errMess={this.props.staffs.errMess}/>
+          errMess={this.props.staffs.errMess}
+          dept={this.props.departments.departments}/>
         )
       }
       const StaffWithDept =({match}) => {
@@ -69,12 +72,15 @@ class Main extends Component {
         <Switch>
           <Route path="/trangchu" component={HomePage}/>
           <Route exact path="/nhanvien" component={() => <StaffList staffs={this.props.staffs.staffs} 
-                addStaff={this.props.addStaff} />} />
+                addStaff={this.props.addStaff} 
+                staffsLoading={this.props.staffs.isLoading}
+                />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
-          <Route exact path="/phongban" component={() => <DepartmentList departments={this.props.departments.departments} 
-                staffs={this.props.staffs.staffs} />} />
+          <Route exact path="/phongban" component={() => <DepartmentList 
+              departments={this.props.departments.departments} 
+              staffs={this.props.staffs.staffs} />} />
           <Route path='/phongban/:deptId' component={StaffWithDept} />
-          <Route exact path="/bangluong" component={() => <Salary staffs={this.props.staffs}/>} />
+          <Route exact path="/bangluong" component={() => <Salary staffs={this.props.staffsSalary.staffsSalary}/>} />
           <Redirect to="/trangchu" />
         </Switch>
         <Footer />
