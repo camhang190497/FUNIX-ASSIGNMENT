@@ -2,7 +2,7 @@ import React from 'react';
 import { CardTitle, CardText, Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb } from 'reactstrap';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-
+import { Loading } from './LoadingComponent';
 
     function RenderStaff({staff, onClick}) {
         return(
@@ -24,7 +24,25 @@ import { Link } from 'react-router-dom';
         );
     }
     const StaffDetail = (props) => {
-        if (props.staff != null)
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.staff != null)
         return (
             <div className="container">
                 <div className="row">
