@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-9">
                     <CardBody style={{paddingTop:'0px'}}>
-                    <CardTitle>Họ và tên: {staff.name}</CardTitle>
+                    <CardTitle> {staff.name}</CardTitle>
                     
                     </CardBody>
                 </Col>
@@ -21,26 +21,24 @@ import { Link } from 'react-router-dom';
         );
     }
     const DepartmentDetail = (props) => {
-       const staffs = props.staff.map((val) => (
-           <div key={val.id}>
-               <RenderStaffItem staff={val} />
-           </div>
-       ))
+        
+           
+        
         if (props.staff != null)
         return (
             <div className="container">
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/phongban'>Phòng  ban</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.dept.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{props.department.name}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.dept.name}</h3>
+                        <h3>{props.department.name}</h3>
                         <hr/>
                     </div>
                 
                     <div className="col-12">
-                        {staffs}
+                    <RenderStaffItem staff={props.staff}/>
                     </div>
                 </div>
             </div>

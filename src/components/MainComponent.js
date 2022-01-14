@@ -12,6 +12,7 @@ import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addStaff,fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
 import DepartmentDetail from './DepartmentdetailComponent';
+
 const mapStateToProps = state => {
   return {
     staffs: state.staffs,
@@ -52,17 +53,21 @@ class Main extends Component {
 
       const StaffWithId = ({match}) => {
         return(
-          <StaffDetail staff={this.props.staffs.staffs.filter((staff) => staff.id === parseInt(match.params.staffId,10))[0] }
+          <StaffDetail 
+          staff={this.props.staffs.staffs.filter((staff) => staff.id === parseInt(match.params.staffId,10))[0] }
+          department={this.props.departments.departments.filter((department) => department.id)[0]}
           isLoading={this.props.staffs.isLoading}
+
           errMess={this.props.staffs.errMess}
-          dept={this.props.departments.departments}/>
+          />
         )
       }
       const StaffWithDept =({match}) => {
         return(
           <DepartmentDetail 
-          dept={this.props.departments.departments.filter((dept) => dept.id === match.params.deptId)[0]}
-          staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === parseInt(match.params.deptId,10))[0] }/>
+          department={this.props.departments.departments.filter((department) => department.id === parseInt(match.params.deptId,10))[0]}
+          staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === parseInt(match.params.deptId,10))[0] }
+           />
         )
       }
     
@@ -71,10 +76,11 @@ class Main extends Component {
         <Header />
         <Switch>
           <Route path="/trangchu" component={HomePage}/>
-          <Route exact path="/nhanvien" component={() => <StaffList staffs={this.props.staffs.staffs} 
-                addStaff={this.props.addStaff} 
-                staffsLoading={this.props.staffs.isLoading}
-                />} />
+          <Route exact path="/nhanvien" component={() => <StaffList 
+              staffs={this.props.staffs.staffs} 
+              addStaff={this.props.addStaff} 
+              staffsLoading={this.props.staffs.isLoading}
+              />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
           <Route exact path="/phongban" component={() => <DepartmentList 
               departments={this.props.departments.departments} 
