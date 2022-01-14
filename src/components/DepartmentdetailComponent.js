@@ -21,7 +21,11 @@ import { Link } from 'react-router-dom';
         );
     }
     const DepartmentDetail = (props) => {
-        
+        const staffs = props.staff.map((val) => (
+            <div>
+                <RenderStaffItem staff={val} />
+            </div>
+        ))
            
         
         if (props.staff != null)
@@ -33,12 +37,12 @@ import { Link } from 'react-router-dom';
                         <BreadcrumbItem active>{props.department.name}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.department.name}</h3>
+                        <h3></h3>
                         <hr/>
                     </div>
                 
                     <div className="col-12">
-                    <RenderStaffItem staff={props.staff}/>
+                    {staffs}
                     </div>
                 </div>
             </div>
