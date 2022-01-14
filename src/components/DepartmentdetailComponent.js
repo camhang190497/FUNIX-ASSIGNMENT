@@ -1,28 +1,24 @@
 import React from 'react';
-import { CardTitle,  Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb } from 'reactstrap';
+import { CardTitle,  CardImg,  BreadcrumbItem, Breadcrumb, Card } from 'reactstrap';
 
 import { Link } from 'react-router-dom';
 
     function RenderStaffItem({staff}) {
         return(
-            <Row className="row no-gutters">
-                <Link  to={`/nhanvien/${staff.id}`} >
-                <Col className="col-6 col-sm-4 col-md-3">
-                    <CardImg width="auto" src={staff.image} alt={staff.name}></CardImg>
-                </Col>
-                <Col className="col-12 col-sm-8 col-md-9">
-                    <CardBody style={{paddingTop:'0px'}}>
-                    <CardTitle> {staff.name}</CardTitle>
-                    
-                    </CardBody>
-                </Col>
-                </Link>
-            </Row>
+            <div style={{paddingBottom: '10px'}}>
+                <Card >
+                    <Link  to={`/nhanvien/${staff.id}`} >
+                        <CardImg width="100%" src={staff.image} alt={staff.name}></CardImg>
+                        <CardTitle style={{textAlign:'center'}}> {staff.name}</CardTitle>
+                    </Link>
+                </Card>
+ 
+            </div>
         );
     }
     const DepartmentDetail = (props) => {
         const staffs = props.staff.map((val) => (
-            <div>
+            <div className="col-6 col-sm-4 col-md-3">
                 <RenderStaffItem staff={val} />
             </div>
         ))
