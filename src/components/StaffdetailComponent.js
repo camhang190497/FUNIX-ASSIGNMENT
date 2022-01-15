@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { CardTitle, CardText, Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb } from 'reactstrap';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
@@ -23,41 +23,31 @@ import { Loading } from './LoadingComponent';
             </Row>
         );
     }
-    const StaffDetail = (props) => {
-        if (props.isLoading) {
+    
+
+    
+    class StaffDetail extends Component {
+        constructor(props){
+            super(props);
+         
+        }
+        render(){
+            if (this.props.staff != null)
             return(
                 <div className="container">
-                    <div className="row">            
-                        <Loading />
-                    </div>
-                </div>
-            );
-        }
-        else if (props.errMess) {
-            return(
-                <div className="container">
-                    <div className="row">            
-                        <h4>{props.errMess}</h4>
-                    </div>
-                </div>
-            );
-        }
-        else if (props.staff != null)
-        return (
-            <div className="container">
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to='/nhanvien'>Nhân  viên</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{props.staff.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{this.props.staff.name}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{props.staff.name}</h3>
+                        <h3>{this.props.staff.name}</h3>
                         <hr/>
                     </div>
                 
                     <div className="col-12">
-                        <RenderStaff staff={props.staff}
-                        department={props.department}
+                        <RenderStaff staff={this.props.staff}
+                        department={this.props.department}
                          />
                     </div>
                 </div>
@@ -66,8 +56,9 @@ import { Loading } from './LoadingComponent';
         else 
         return(
             <div></div>
-        )
-
+        ) 
+            
+        }
     }
     
 
