@@ -82,7 +82,7 @@ const isNumber = (val) => !isNaN(Number(val));
                     <div className="col-12">
                         <nav className="navbar navbar-light bg-light justify-content-between">
                             <p className="navbar-brand" >Nhân Viên</p>
-                            <StaffForm addStaff={this.props.addStaff}/>
+                            <StaffForm postStaff={this.props.postStaff}/>
                             <Form className="form-inline"
                                 onSubmit={this.handleSearch}
                             > 
@@ -161,16 +161,7 @@ class StaffForm extends Component {
     }
     handleSubmit = (value) => {
         //event.preventDefault();
-        const newStaff = {
-            name: value.name,
-            doB: this.state.doB,
-            startDate: this.state.startDate,
-            salaryScale: value.salaryScale,
-            department: value.department,
-            annualLeave: value.annualLeave,
-            overTime: value.overTime,
-            image: '/assets/images/alberto.png',
-        };
+        
         if (  !this.state.doB || !this.state.startDate) 
             this.setState({
                 touched: {
@@ -178,18 +169,20 @@ class StaffForm extends Component {
                         startDate:true
                 }
         })
-        else
-            this.props.addStaff(
-                this.props.staffId, 
-                value.name, 
-                value.doB, 
-                value.startDate,
-                value.department, 
-                value.salaryScale, 
-                value.annualLeave, 
-                value.overTime, 
-                value.image);
-
+        else{
+            const newStaff = {
+                name: value.name,
+                doB: this.state.doB,
+                startDate: this.state.startDate,
+                salaryScale: value.salaryScale,
+                department: value.department,
+                annualLeave: value.annualLeave,
+                overTime: value.overTime,
+                image: '/asset/images/alberto.png',
+            };
+            this.props.postStaff(newStaff);
+        }
+            
         
     }
     handleBlur = (field) => (evt) => {

@@ -10,7 +10,7 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addStaff,fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
+import { postStaff, fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
 import DepartmentDetail from './DepartmentdetailComponent';
 
 const mapStateToProps = state => {
@@ -22,7 +22,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => ({
   
-  addStaff: (staffId, name, doB, startDate, department, salaryScale, annualLeave, overTime) => dispatch(addStaff(staffId, name, doB, startDate, department,salaryScale, annualLeave, overTime)),
+  postStaff: (staff) => dispatch(postStaff(staff)),
   fetchStaffs: () => { dispatch(fetchStaffs())},
   fetchDepartments: () => { dispatch(fetchDepartments())},
   fetchStaffsSalary: () => { dispatch(fetchStaffsSalary())}
@@ -78,7 +78,7 @@ class Main extends Component {
           <Route path="/trangchu" component={HomePage}/>
           <Route exact path="/nhanvien" component={() => <StaffList 
               staffs={this.props.staffs.staffs} 
-              addStaff={this.props.addStaff} 
+              postStaff={this.props.postStaff} 
               staffsLoading={this.props.staffs.isLoading}
               />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
