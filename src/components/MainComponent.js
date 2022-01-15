@@ -10,7 +10,7 @@ import Footer from './FooterComponent';
 import Home from './HomeComponent';
 import { Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postStaff, fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
+import { postStaff,deleteStaff, fetchStaffs, fetchDepartments,fetchStaffsSalary } from '../redux/ActionCreators';
 import DepartmentDetail from './DepartmentdetailComponent';
 
 const mapStateToProps = state => {
@@ -25,7 +25,8 @@ const mapDispatchToProps = dispatch => ({
   postStaff: (staff) => dispatch(postStaff(staff)),
   fetchStaffs: () => { dispatch(fetchStaffs())},
   fetchDepartments: () => { dispatch(fetchDepartments())},
-  fetchStaffsSalary: () => { dispatch(fetchStaffsSalary())}
+  fetchStaffsSalary: () => { dispatch(fetchStaffsSalary())},
+  deleteStaff: (id) => {dispatch(deleteStaff(id))}
 });
 
 class Main extends Component {
@@ -80,6 +81,7 @@ class Main extends Component {
               staffs={this.props.staffs.staffs} 
               postStaff={this.props.postStaff} 
               staffsLoading={this.props.staffs.isLoading}
+              onDeleteStaff={this.props.deleteStaff}
               />} />
           <Route path='/nhanvien/:staffId' component={StaffWithId} />
           <Route exact path="/phongban" component={() => <DepartmentList 

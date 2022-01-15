@@ -9,7 +9,7 @@ const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 
-    function RenderStaffItem({staff}) {
+    const RenderStaffItem = ({staff, onDeleteStaff}) => {
         return(
             <div style={{paddingBottom: '10px'}}>
             <Card>
@@ -18,6 +18,7 @@ const isNumber = (val) => !isNaN(Number(val));
                     <CardTitle style={{textAlign:'center'}}>{staff.name}</CardTitle>
                 </Link>
             </Card>
+            <Button outline onClick={() => onDeleteStaff(staff.id)}><i className="fa fa-trash fa-lg"></i></Button>
             
             </div>
         );
@@ -71,7 +72,8 @@ const isNumber = (val) => !isNaN(Number(val));
             .map((staff) => {
                 return(
                     <div key={staff.id} className="col-6 col-sm-4 col-md-2">
-                        <RenderStaffItem staff={staff} addStaff={this.props.addStaff}/>
+                        <RenderStaffItem staff={staff} addStaff={this.props.addStaff}
+                                        onDeleteStaff={this.props.onDeleteStaff}/>
                     </div>
                 )
             });

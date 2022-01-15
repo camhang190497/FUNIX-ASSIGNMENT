@@ -1,7 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { STAFFS } from '../shared/staffs';
 import { baseUrl } from '../shared/baseUrl';
-
+//add new staff
 export const addStaff = (staff) => ({
     type: ActionTypes.ADD_STAFF,
     payload: staff
@@ -32,6 +32,21 @@ export const postStaff = (staff) => (dispatch) => {
     .then(response => dispatch(addStaff(response)))
     .catch(error =>  { console.log('post staffs', error.message); alert('Your staff could not be posted\nError: '+error.message); });
 }
+//delete
+export const deleteStaffSuccess = (id) => ({
+  type: ActionTypes.DELETE_STAFF_SUCCESS,
+    payload: id
+});
+export const deleteStaffLoading = () => ({
+  type: ActionTypes.DELETE_STAFF_LOADING,
+    
+});
+export const deleteStaff = (id) => (dispatch) =>{
+  return fetch(baseUrl + `staffs/${id}`,{
+    method: 'DELETE',
+  }).then(() => dispatch(deleteStaffSuccess(id)));
+}
+
 
 //fetch staffs
 export const fetchStaffs = () => (dispatch) => {
