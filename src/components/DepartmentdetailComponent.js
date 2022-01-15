@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
     }
     const DepartmentDetail = (props) => {
         const staffs = props.staff.map((val) => (
-            <div className="col-6 col-sm-4 col-md-3">
+            <div className="col-6 col-sm-4 col-md-3" key={val.name}>
                 <RenderStaffItem staff={val} />
             </div>
         ))
