@@ -46,7 +46,37 @@ export const deleteStaff = (id) => (dispatch) =>{
     method: 'DELETE',
   }).then(() => dispatch(deleteStaffSuccess(id)));
 }
-
+//update
+export const updateStaffSuccess = (staff) => ({
+  type: ActionTypes.UPDATE_STAFFS_SUCCESS,
+  payload: staff
+      
+});
+export const updateStaff = (staff) => (dispatch) => {
+  return fetch(baseUrl + 'staffs', {
+      method: "PATCH",
+      body: JSON.stringify(staff),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "same-origin"
+  })
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          throw error;
+    })
+  .then(response => response.json())
+  .then(response => dispatch(updateStaffSuccess(response)))
+  .catch(error =>  { console.log('update staffs', error.message); alert('Your staff could not be updated\nError: '+error.message); });
+}
 
 //fetch staffs
 export const fetchStaffs = () => (dispatch) => {
