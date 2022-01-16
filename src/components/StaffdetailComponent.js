@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { CardTitle, CardText, Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb, Form, Label, Input,  Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
-
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
     function RenderStaff({staff, department}) {
         return(
+            <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>    
             <Row className="row no-gutters">
                 <Col className="col-6 col-sm-4 col-md-3">
                     <CardImg width="auto" src={staff.image} alt={staff.name}></CardImg>
@@ -21,6 +26,7 @@ import { Link } from 'react-router-dom';
                     </CardBody>
                 </Col>
             </Row>
+            </FadeTransform>
         );
     }
     class UpdateForm extends Component {
