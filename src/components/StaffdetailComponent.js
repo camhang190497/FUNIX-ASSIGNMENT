@@ -21,6 +21,7 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
                         <CardText>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</CardText>
                         <CardText>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</CardText>
                         <CardText>Phòng ban: {department.name }</CardText>
+                        <CardText>Hệ số lương: {staff.salaryScale}</CardText>
                         <CardText>Số ngày nghỉ còn lại: {staff.annualLeave}</CardText>
                         <CardText>Số ngày đã làm thêm: {staff.overTime}</CardText>
                     </CardBody>
@@ -210,7 +211,7 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
                 
                     <div className="col-12">
                         <RenderStaff staff={this.props.staff}
-                        department={this.props.department}
+                        department={this.props.department.filter((department) => department.id === this.props.staff.departmentId)[0]}
                          />
                     </div>
                     

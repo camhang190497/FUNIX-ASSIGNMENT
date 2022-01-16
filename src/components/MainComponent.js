@@ -58,7 +58,7 @@ class Main extends Component {
         return(
           <StaffDetail 
           staff={this.props.staffs.staffs.filter((staff) => staff.id === parseInt(match.params.staffId,10))[0] }
-          department={this.props.departments.departments.filter((department) => department.id)[0]}
+          department={this.props.departments.departments}
           isLoading={this.props.staffs.isLoading}
 
           errMess={this.props.staffs.errMess}
