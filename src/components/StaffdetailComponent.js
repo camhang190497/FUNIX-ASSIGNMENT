@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CardTitle, CardText, Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb, Form, Label, Input,  Button } from 'reactstrap';
+import { CardTitle, CardText, Row, Col, CardImg, CardBody, BreadcrumbItem, Breadcrumb, Form, Label, Input,  Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import dateFormat from 'dateformat';
 import { Link } from 'react-router-dom';
 
@@ -27,8 +27,22 @@ import { Link } from 'react-router-dom';
         constructor(props){
             super(props);
             this.state = {
-                staff: props.staff
+                staff: props.staff,
+                isNavOpen: false,
+                isModalOpen: false,
             };
+            this.toggleNav = this.toggleNav.bind(this);
+            this.toggleModal = this.toggleModal.bind(this);
+        }
+        toggleNav() {
+            this.setState({
+                isNavOpen: !this.state.isNavOpen
+            });
+        }
+        toggleModal() {
+            this.setState({
+              isModalOpen: !this.state.isModalOpen
+        });
         }
         handleSubmit(e) {
             e.preventDefault();
@@ -44,13 +58,22 @@ import { Link } from 'react-router-dom';
             };
             this.props.updateStaff(staffUpdate);
         }
+
         render(){
             return(
                 <div>
+                    <div className="col-2 col-auto">
+                    <Button outline onClick={this.toggleModal}>
+                        <i className="fa fa-pencil fa-lg"></i>
+                    </Button>
+                    </div>
+                    <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                        <ModalHeader toggle={this.toggleModal}>Chỉnh sửa</ModalHeader>
+                        <ModalBody>
                     <Form onSubmit={this.handleSubmit.bind(this)}>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">Tên:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="name"
@@ -63,7 +86,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="doB">ngay sinh:</Label>
+                                <Label htmlFor="doB">Ngày sinh:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="doB"
@@ -76,7 +99,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="startDate">ngay vao cong ty:</Label>
+                                <Label htmlFor="startDate">Ngày vào công ty:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="startDate"
@@ -89,7 +112,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="salaryScale">he so luong:</Label>
+                                <Label htmlFor="salaryScale">hệ số lương:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="salaryScale"
@@ -102,7 +125,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="departmentId">phong ban:</Label>
+                                <Label htmlFor="departmentId">Phòng ban:</Label>
                             </Col>
                             <Col md={8}>
                                 <select className='form-control' name="departmentId"
@@ -120,7 +143,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="annualLeave">so ngay nghi con lai:</Label>
+                                <Label htmlFor="annualLeave">Số ngày nghỉ còn lại:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="annualLeave"
@@ -133,7 +156,7 @@ import { Link } from 'react-router-dom';
                         </Row>
                         <Row>
                             <Col md={4}>
-                                <Label htmlFor="overTime">so ngay da lam them:</Label>
+                                <Label htmlFor="overTime">Số ngày đã làm thêm:</Label>
                             </Col>
                             <Col md={8}>
                                 <Input className='form-control' name="overTime"
@@ -144,8 +167,10 @@ import { Link } from 'react-router-dom';
                                 
                             </Col>
                         </Row>
-                        <Button color="success" type="submit">Update</Button>
+                        <Button color="success" type="submit">Cập nhật</Button>
                     </Form>
+                    </ModalBody>
+                    </Modal>
                 </div>
             )
         }
@@ -172,7 +197,8 @@ import { Link } from 'react-router-dom';
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>{this.props.staff.name}</h3>
-                        <Button color="success" onClick={()=> this.setState({ select: !this.state.select })}>Update</Button>
+                        <UpdateForm staff={this.props.staff}
+                                  updateStaff={this.props.updateStaff}/>
                         <hr/>
                     </div>
                 
@@ -181,10 +207,7 @@ import { Link } from 'react-router-dom';
                         department={this.props.department}
                          />
                     </div>
-                    <div>
-                        <UpdateForm staff={this.props.staff}
-                                  updateStaff={this.props.updateStaff}/>
-                    </div>
+                    
                 </div>
             </div>
         );
